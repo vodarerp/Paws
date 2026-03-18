@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet --version)",
+      "Bash(dotnet:*)",
+      "Bash(rm Paws.sln)",
+      "Bash(mkdir -p src tests infra)",
+      "Bash(rm -f Class1.cs)",
+      "Bash(mkdir -p Entities Enums ValueObjects Constants Exceptions Interfaces/Repositories Interfaces/Services Common)",
+      "Bash(mkdir -p Common/Interfaces Common/Behaviors Common/Models Auth/Commands/Register Auth/Commands/Login Auth/DTOs)",
+      "Bash(mkdir -p Persistence/Configurations Persistence/Repositories Persistence/Migrations Identity Services)",
+      "Bash(cd:*)"
+    ]
+  }
+}
