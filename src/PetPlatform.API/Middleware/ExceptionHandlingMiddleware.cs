@@ -32,6 +32,7 @@ public class ExceptionHandlingMiddleware
     {
         var (statusCode, errorCode, message) = exception switch
         {
+            UnauthorizedPostAccessException ex => (HttpStatusCode.Forbidden, ex.Code, ex.Message),
             DomainException domainEx => (HttpStatusCode.BadRequest, domainEx.Code, domainEx.Message),
             ValidationException validationEx => (HttpStatusCode.BadRequest, "VALIDATION_ERROR",
                 string.Join("; ", validationEx.Errors.Select(e => e.ErrorMessage))),

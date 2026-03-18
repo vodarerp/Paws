@@ -1,6 +1,8 @@
 using PetPlatform.Application;
+using PetPlatform.Application.Common.Interfaces;
 using PetPlatform.Infrastructure;
 using PetPlatform.API.Middleware;
+using PetPlatform.API.Services;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,9 @@ builder.Host.UseSerilog((context, configuration) =>
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

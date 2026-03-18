@@ -9,7 +9,19 @@
       "Bash(mkdir -p Entities Enums ValueObjects Constants Exceptions Interfaces/Repositories Interfaces/Services Common)",
       "Bash(mkdir -p Common/Interfaces Common/Behaviors Common/Models Auth/Commands/Register Auth/Commands/Login Auth/DTOs)",
       "Bash(mkdir -p Persistence/Configurations Persistence/Repositories Persistence/Migrations Identity Services)",
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(taskkill:*)",
+      "Bash(curl -s http://localhost:5000/swagger/v1/swagger.json)",
+      "Bash(curl:*)",
+      "Bash(TOKEN=\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImNmMGM2Y2MxLTRhZDUtNDJlNi1iZjIwLTIxMzVkMjAxMzBlMiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InBvc3RzQHRlc3QuY29tIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IlBvc3RUZXN0ZXIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJJbmRpdmlkdWFsIiwiZXhwIjoxNzczODcyOTM1LCJpc3MiOiJQZXRQbGF0Zm9ybSIsImF1ZCI6IlBldFBsYXRmb3JtIn0.N6lFnB4hFuXAu0RDcdtXh8uMoxCoGpWYg-j2qPb9l04\")",
+      "Bash(__NEW_LINE_b2cc139ee63e3ea8__ echo:*)",
+      "Bash(__NEW_LINE_38e6f742c080bead__ FAKE_MEDIA=\"00000000-0000-0000-0000-000000000001\")",
+      "Bash(__NEW_LINE_38e6f742c080bead__ echo:*)",
+      "Bash(python3 -m json.tool)",
+      "Bash(__NEW_LINE_91397acd5e35e9db__ echo:*)",
+      "Bash(tasklist //FI 'IMAGENAME eq PetPlatform.API.exe')",
+      "Bash(tasklist //FI 'IMAGENAME eq dotnet.exe')",
+      "Bash(__NEW_LINE_d389dec6c1fde1d6__ echo:*)"
     ]
   }
 }

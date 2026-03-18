@@ -38,6 +38,21 @@ public class Pet : AuditableEntity
         };
     }
 
+    public void Update(string name, string breed, PetGender gender, PetSize size,
+        string? age, string? color, string? specialMarks, string? chipNumber, bool? isSterilized)
+    {
+        Name = name.Trim();
+        Breed = breed.Trim();
+        Gender = gender;
+        Size = size;
+        Age = age?.Trim();
+        Color = color?.Trim();
+        SpecialMarks = specialMarks?.Trim();
+        ChipNumber = chipNumber?.Trim();
+        IsSterilized = isSterilized;
+        SetUpdated();
+    }
+
     public void MarkAsLost() { Status = PetStatus.Lost; SetUpdated(); }
     public void MarkAsFound() { Status = PetStatus.WithOwner; SetUpdated(); }
     public void MarkForAdoption() { Status = PetStatus.ForAdoption; SetUpdated(); }

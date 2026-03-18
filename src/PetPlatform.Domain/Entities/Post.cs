@@ -60,6 +60,18 @@ public class Post : AuditableEntity
         return post;
     }
 
+    public void Update(string title, string description, string locationZone,
+        double? latitude, double? longitude, ContactPreference? contactPreference)
+    {
+        Title = title.Trim();
+        Description = description.Trim();
+        LocationZone = locationZone.Trim();
+        Latitude = latitude;
+        Longitude = longitude;
+        ContactPreference = contactPreference;
+        SetUpdated();
+    }
+
     public void MarkAlertSent()
     {
         AlertSentAt = DateTime.UtcNow;

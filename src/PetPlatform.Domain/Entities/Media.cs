@@ -45,4 +45,11 @@ public class Media : BaseEntity
         ModerationStatus = ModerationStatus.Rejected;
         SetUpdated();
     }
+
+    public void AssociateWith(MediaEntityType entityType, Guid entityId)
+    {
+        EntityType = entityType;
+        EntityId = entityId;
+        SetUpdated();
+    }
 }
