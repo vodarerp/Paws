@@ -47,8 +47,8 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Platform = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Token = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Platform = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     LastUsedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -70,10 +70,10 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Body = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    IsRead = table.Column<bool>(type: "bit", nullable: false),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -94,14 +94,14 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Breed = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Age = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Breed = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Age = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Gender = table.Column<int>(type: "int", nullable: false),
                     Size = table.Column<int>(type: "int", nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SpecialMarks = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ChipNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Color = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    SpecialMarks = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ChipNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     IsSterilized = table.Column<bool>(type: "bit", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -117,7 +117,7 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                         column: x => x.OwnerId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -128,7 +128,7 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ActionType = table.Column<int>(type: "int", nullable: false),
                     Points = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     RelatedEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -150,8 +150,8 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AmberAlertEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    StatusChangesEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AmberAlertEnabled = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    StatusChangesEnabled = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -231,19 +231,20 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                         name: "FK_ChatConversations_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_ChatConversations_Users_Participant1Id",
                         column: x => x.Participant1Id,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ChatConversations_Users_Participant2Id",
                         column: x => x.Participant2Id,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -287,9 +288,9 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                     ReporterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Latitude = table.Column<double>(type: "float", nullable: false),
                     Longitude = table.Column<double>(type: "float", nullable: false),
-                    LocationDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LocationDescription = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     SeenAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Comment = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -307,7 +308,7 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                         column: x => x.ReporterId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -319,9 +320,9 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                     TargetType = table.Column<int>(type: "int", nullable: false),
                     TargetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Reason = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    AdminNotes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AdminNotes = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     ResolvedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -340,7 +341,7 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                         column: x => x.ReporterId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -350,8 +351,8 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ConversationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SenderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsRead = table.Column<bool>(type: "bit", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -369,28 +370,30 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                         column: x => x.SenderId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatConversations_Participant1Id",
+                name: "IX_ChatConversations_Participant1Id_LastMessageAt",
                 table: "ChatConversations",
-                column: "Participant1Id");
+                columns: new[] { "Participant1Id", "LastMessageAt" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatConversations_Participant2Id",
+                name: "IX_ChatConversations_Participant2Id_LastMessageAt",
                 table: "ChatConversations",
-                column: "Participant2Id");
+                columns: new[] { "Participant2Id", "LastMessageAt" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatConversations_PostId",
+                name: "IX_ChatConversations_PostId_Participant1Id",
                 table: "ChatConversations",
-                column: "PostId");
+                columns: new[] { "PostId", "Participant1Id" },
+                unique: true,
+                filter: "[PostId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatMessages_ConversationId",
+                name: "IX_ChatMessages_ConversationId_CreatedAt",
                 table: "ChatMessages",
-                column: "ConversationId");
+                columns: new[] { "ConversationId", "CreatedAt" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatMessages_SenderId",
@@ -398,14 +401,15 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FcmTokens_UserId",
+                name: "IX_FcmTokens_UserId_Token",
                 table: "FcmTokens",
-                column: "UserId");
+                columns: new[] { "UserId", "Token" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_InAppNotifications_UserId",
+                name: "IX_InAppNotifications_UserId_IsRead_CreatedAt",
                 table: "InAppNotifications",
-                column: "UserId");
+                columns: new[] { "UserId", "IsRead", "CreatedAt" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Media_EntityType_EntityId",
@@ -434,6 +438,11 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Pets_Status",
+                table: "Pets",
+                column: "Status");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Posts_AuthorId_CreatedAt",
                 table: "Posts",
                 columns: new[] { "AuthorId", "CreatedAt" });
@@ -460,9 +469,9 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                 column: "PetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostSightings_PostId",
+                name: "IX_PostSightings_PostId_SeenAt",
                 table: "PostSightings",
-                column: "PostId");
+                columns: new[] { "PostId", "SeenAt" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_PostSightings_ReporterId",
@@ -480,14 +489,25 @@ namespace PetPlatform.Infrastructure.Persistence.Migrations
                 column: "ReporterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrustScoreHistory_UserId",
+                name: "IX_Reports_Status_CreatedAt",
+                table: "Reports",
+                columns: new[] { "Status", "CreatedAt" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_TargetType_TargetId",
+                table: "Reports",
+                columns: new[] { "TargetType", "TargetId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TrustScoreHistory_UserId_CreatedAt",
                 table: "TrustScoreHistory",
-                column: "UserId");
+                columns: new[] { "UserId", "CreatedAt" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserNotificationSettings_UserId",
                 table: "UserNotificationSettings",
-                column: "UserId");
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
