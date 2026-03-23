@@ -1,3 +1,4 @@
+using NetTopologySuite.Geometries;
 using PetPlatform.Domain.Common;
 using PetPlatform.Domain.Constants;
 using PetPlatform.Domain.Enums;
@@ -14,8 +15,7 @@ public class User : BaseEntity
     public UserRole Role { get; private set; }
     public int TrustScore { get; private set; }
     public string LocationZone { get; private set; } = default!;
-    public double? LastKnownLatitude { get; private set; }
-    public double? LastKnownLongitude { get; private set; }
+    public Point? Location { get; private set; }
     public bool GpsConsentGiven { get; private set; }
     public string? OrganizationName { get; private set; }
     public string? OrganizationUrl { get; private set; }
@@ -43,11 +43,13 @@ public class User : BaseEntity
         };
     }
 
+    public double? LastKnownLatitude => Location?.Y;
+    public double? LastKnownLongitude => Location?.X;
+
     public void UpdateLocation(double latitude, double longitude, bool gpsConsent)
     {
-        var location = Location.Create(latitude, longitude);
-        LastKnownLatitude = location.Latitude;
-        LastKnownLongitude = location.Longitude;
+        var validated = LocationValue.Create(latitude, longitude);
+        Location = GeoPointFactory.Create(validated.Longitude, validated.Latitude);
         GpsConsentGiven = gpsConsent;
         SetUpdated();
     }

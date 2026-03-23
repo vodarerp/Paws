@@ -10,6 +10,10 @@ public class PostSightingConfiguration : IEntityTypeConfiguration<PostSighting>
     {
         builder.HasKey(s => s.Id);
 
+        builder.Property(s => s.Location).HasColumnType("geography").IsRequired();
+        builder.Ignore(s => s.Latitude);
+        builder.Ignore(s => s.Longitude);
+
         builder.Property(s => s.LocationDescription).HasMaxLength(200);
         builder.Property(s => s.Comment).HasMaxLength(500);
 

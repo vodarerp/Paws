@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
 using PetPlatform.Domain.Entities;
 using PetPlatform.Domain.Interfaces.Repositories;
 
@@ -7,6 +8,8 @@ namespace PetPlatform.Infrastructure.Persistence.Repositories;
 public class UserRepository : IUserRepository
 {
     private readonly ApplicationDbContext _context;
+    private static readonly GeometryFactory GeometryFactory = NetTopologySuite.NtsGeometryServices.Instance
+        .CreateGeometryFactory(srid: 4326);
 
     public UserRepository(ApplicationDbContext context) => _context = context;
 
@@ -32,17 +35,13 @@ public class UserRepository : IUserRepository
     public async Task<IEnumerable<Guid>> GetUsersInRadiusAsync(
         double latitude, double longitude, double radiusMeters, CancellationToken ct = default)
     {
-        // Faza 0: koristi SQL Server geography za spatial upit
+        var searchPoint = GeometryFactory.CreatePoint(new Coordinate(longitude, latitude));
+
         return await _context.Users
-            .FromSqlRaw(@"
-                SELECT * FROM Users
-                WHERE IsBanned = 0
-                  AND GpsConsentGiven = 1
-                  AND LastKnownLatitude IS NOT NULL
-                  AND LastKnownLongitude IS NOT NULL
-                  AND geography::Point(LastKnownLatitude, LastKnownLongitude, 4326)
-                      .STDistance(geography::Point({0}, {1}, 4326)) <= {2}",
-                latitude, longitude, radiusMeters)
+            .Where(u => !u.IsBanned
+                && u.GpsConsentGiven
+                && u.Location != null
+                && u.Location.Distance(searchPoint) <= radiusMeters)
             .Select(u => u.Id)
             .ToListAsync(ct);
     }

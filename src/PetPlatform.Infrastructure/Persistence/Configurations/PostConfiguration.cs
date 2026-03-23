@@ -13,6 +13,10 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
         builder.Property(p => p.Title).HasMaxLength(200).IsRequired();
         builder.Property(p => p.Description).HasMaxLength(2000).IsRequired();
         builder.Property(p => p.LocationZone).HasMaxLength(100).IsRequired();
+        builder.Property(p => p.Location).HasColumnType("geography");
+        builder.Ignore(p => p.Latitude);
+        builder.Ignore(p => p.Longitude);
+
         builder.Property(p => p.AlertRadiusKm).HasDefaultValue(10);
         builder.Property(p => p.ReportCount).HasDefaultValue(0);
         builder.Property(p => p.IsHidden).HasDefaultValue(false);

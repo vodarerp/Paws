@@ -21,7 +21,8 @@
       "Bash(__NEW_LINE_91397acd5e35e9db__ echo:*)",
       "Bash(tasklist //FI 'IMAGENAME eq PetPlatform.API.exe')",
       "Bash(tasklist //FI 'IMAGENAME eq dotnet.exe')",
-      "Bash(__NEW_LINE_d389dec6c1fde1d6__ echo:*)"
+      "Bash(__NEW_LINE_d389dec6c1fde1d6__ echo:*)",
+      "Bash(grep -r \"FromSqlRaw\\\\|geography\\\\|STDistance\" /c/Nikola/Private/Paws/Paws/src --include=*.cs)"
     ]
   }
 }

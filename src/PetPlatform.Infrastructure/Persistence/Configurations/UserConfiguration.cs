@@ -19,6 +19,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.LocationZone).HasMaxLength(100).IsRequired();
         builder.Property(u => u.OrganizationName).HasMaxLength(200);
         builder.Property(u => u.OrganizationUrl).HasMaxLength(500);
+        builder.Property(u => u.Location).HasColumnType("geography");
+        builder.Ignore(u => u.LastKnownLatitude);
+        builder.Ignore(u => u.LastKnownLongitude);
+
         builder.Property(u => u.TrustScore).HasDefaultValue(0);
         builder.Property(u => u.IsVerified).HasDefaultValue(false);
         builder.Property(u => u.IsBanned).HasDefaultValue(false);

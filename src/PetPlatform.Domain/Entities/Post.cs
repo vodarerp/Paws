@@ -1,7 +1,9 @@
+using NetTopologySuite.Geometries;
 using PetPlatform.Domain.Common;
 using PetPlatform.Domain.Constants;
 using PetPlatform.Domain.Enums;
 using PetPlatform.Domain.Exceptions;
+using PetPlatform.Domain.ValueObjects;
 
 namespace PetPlatform.Domain.Entities;
 
@@ -13,8 +15,7 @@ public class Post : AuditableEntity
     public string Title { get; private set; } = default!;
     public string Description { get; private set; } = default!;
     public string LocationZone { get; private set; } = default!;
-    public double? Latitude { get; private set; }
-    public double? Longitude { get; private set; }
+    public Point? Location { get; private set; }
     public DateTime? LastSeenAt { get; private set; }
     public ContactPreference? ContactPreference { get; private set; }
     public int AlertRadiusKm { get; private set; } = 10;
@@ -31,6 +32,9 @@ public class Post : AuditableEntity
     public ICollection<PostSighting> Sightings { get; private set; } = new List<PostSighting>();
     public ICollection<Report> Reports { get; private set; } = new List<Report>();
 
+    public double? Latitude => Location?.Y;
+    public double? Longitude => Location?.X;
+
     protected Post() { }
 
     public static Post Create(Guid authorId, PostCategory category, string title,
@@ -46,8 +50,9 @@ public class Post : AuditableEntity
             Title = title.Trim(),
             Description = description.Trim(),
             LocationZone = locationZone.Trim(),
-            Latitude = latitude,
-            Longitude = longitude,
+            Location = latitude.HasValue && longitude.HasValue
+                ? GeoPointFactory.Create(longitude.Value, latitude.Value)
+                : null,
             ContactPreference = contactPreference,
         };
 
@@ -66,8 +71,9 @@ public class Post : AuditableEntity
         Title = title.Trim();
         Description = description.Trim();
         LocationZone = locationZone.Trim();
-        Latitude = latitude;
-        Longitude = longitude;
+        Location = latitude.HasValue && longitude.HasValue
+            ? GeoPointFactory.Create(longitude.Value, latitude.Value)
+            : null;
         ContactPreference = contactPreference;
         SetUpdated();
     }

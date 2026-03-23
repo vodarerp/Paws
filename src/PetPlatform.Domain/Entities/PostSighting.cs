@@ -1,4 +1,6 @@
+using NetTopologySuite.Geometries;
 using PetPlatform.Domain.Common;
+using PetPlatform.Domain.ValueObjects;
 
 namespace PetPlatform.Domain.Entities;
 
@@ -6,14 +8,16 @@ public class PostSighting : BaseEntity
 {
     public Guid PostId { get; private set; }
     public Guid ReporterId { get; private set; }
-    public double Latitude { get; private set; }
-    public double Longitude { get; private set; }
+    public Point Location { get; private set; } = default!;
     public string? LocationDescription { get; private set; }
     public DateTime SeenAt { get; private set; }
     public string? Comment { get; private set; }
 
     public Post Post { get; private set; } = default!;
     public User Reporter { get; private set; } = default!;
+
+    public double Latitude => Location.Y;
+    public double Longitude => Location.X;
 
     protected PostSighting() { }
 
@@ -25,8 +29,7 @@ public class PostSighting : BaseEntity
         {
             PostId = postId,
             ReporterId = reporterId,
-            Latitude = latitude,
-            Longitude = longitude,
+            Location = GeoPointFactory.Create(longitude, latitude),
             SeenAt = seenAt,
             LocationDescription = locationDescription?.Trim(),
             Comment = comment?.Trim()
